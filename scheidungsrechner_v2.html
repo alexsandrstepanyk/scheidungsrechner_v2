@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="google-site-verification" content="io7CtVQ5gTMjJvRl_0lkCUhiPIWe47OC3fusJhoNIOA" />
 <!-- ══ PRIMARY SEO ══ -->
 <title>Scheidungsrechner 2026 – Kindesunterhalt & Zugewinn berechnen | DT 2026</title>
 <meta name="description" content="Kostenloser Unterhaltsrechner 2026 nach Düsseldorfer Tabelle. Kindesunterhalt, Ehegattenunterhalt, Zugewinnausgleich & Trennungsjahr orientierend berechnen – Stand 01.01.2026.">
@@ -397,6 +397,7 @@ footer a:hover{color:white}
   <div class="calc-tabs" id="calc-tabs-bar">
     <button class="calc-tab active" onclick="switchTab('unterhalt',this)">Kindesunterhalt</button>
     <button class="calc-tab" onclick="switchTab('ehegatten',this)">Ehegattenunterhalt</button>
+    <button class="calc-tab" onclick="switchTab('scheidungskosten',this)">Scheidungskosten</button>
     <button class="calc-tab" onclick="switchTab('zugewinn',this)">Zugewinnausgleich</button>
     <button class="calc-tab" onclick="switchTab('trennungsjahr',this)">Trennungsjahr</button>
   </div>
@@ -545,7 +546,59 @@ footer a:hover{color:white}
     </div>
   </div>
 
-  <!-- ── TAB 3: ZUGEWINNAUSGLEICH ── -->
+  <!-- ── TAB 3: SCHEIDUNGSKOSTEN ── -->
+  <div class="calc-panel" id="tab-scheidungskosten">
+    <div class="calc-form">
+      <h2 class="calc-title">Scheidungskosten berechnen</h2>
+      <p class="calc-legal">
+        Orientierung nach <strong>§§ 43, 44, 50 FamGKG</strong>. Vereinfachter Verfahrenswert:
+        3 monatliche Nettoeinkommen beider Ehegatten + Zugewinn-Folgesache + Versorgungsausgleich.
+        Gerichtskosten werden hier als <strong>2,0 Gebühren</strong> für die Ehesache erster Instanz abgebildet.
+      </p>
+      <div class="form-section">Monatliche Nettoeinkommen</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="sk-a">Netto Ehegatte A</label>
+          <input type="number" class="form-input" id="sk-a" placeholder="z.B. 2500" min="0" oninput="calcScheidungskosten()">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="sk-b">Netto Ehegatte B</label>
+          <input type="number" class="form-input" id="sk-b" placeholder="z.B. 1800" min="0" oninput="calcScheidungskosten()">
+        </div>
+      </div>
+      <div class="form-section">Folgesachen</div>
+      <div class="form-group">
+        <label class="form-label" for="sk-zugewinn">Zugewinn-Folgesache <span class="hint">(geschätzter Streitwert / Anspruch)</span></label>
+        <input type="number" class="form-input" id="sk-zugewinn" placeholder="z.B. 15000" min="0" oninput="calcScheidungskosten()">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="sk-va-anrechte">Versorgungsausgleich: Anzahl Anrechte</label>
+          <select class="form-select" id="sk-va-anrechte" onchange="calcScheidungskosten()">
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2" selected>2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5+</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="sk-va-custom">Versorgungsausgleich-Wert <span class="hint">(optional manuell)</span></label>
+          <input type="number" class="form-input" id="sk-va-custom" placeholder="optional" min="0" oninput="calcScheidungskosten()">
+        </div>
+      </div>
+      <button class="calc-btn" onclick="calcScheidungskosten()">Scheidungskosten berechnen</button>
+    </div>
+    <div>
+      <div class="result-box" id="result-scheidungskosten" role="region" aria-live="polite">
+        <div class="result-title">Ergebnis</div>
+        <div class="result-empty">Einkommen und Folgesachen eingeben</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB 4: ZUGEWINNAUSGLEICH ── -->
   <div class="calc-panel" id="tab-zugewinn">
     <div class="calc-form">
       <h2 class="calc-title">Zugewinnausgleich (§§ 1363–1390 BGB)</h2>
@@ -610,7 +663,7 @@ footer a:hover{color:white}
     </div>
   </div>
 
-  <!-- ── TAB 4: TRENNUNGSJAHR ── -->
+  <!-- ── TAB 5: TRENNUNGSJAHR ── -->
   <div class="calc-panel-single" id="tab-trennungsjahr">
     <div class="calc-form" style="max-width:640px">
       <h2 class="calc-title">Trennungsjahr berechnen</h2>
@@ -727,7 +780,7 @@ footer a:hover{color:white}
   <h3>Kontakt</h3>
   <p>
     E-Mail: <a href="mailto:stepanyk2022@icloud.com">stepanyk2022@icloud.com</a><br>
-    Telefon: <a href="tel:0677636246">0677636246</a>
+    Telefon: <a href="tel:+380677636246">+380 67 763 6246</a>
   </p>
 
   <h3>Umsatzsteuer-Identifikationsnummer</h3>
@@ -757,7 +810,7 @@ footer a:hover{color:white}
   <p><strong>Stand: April 2026. Rechtsgrundlagen: DSGVO, TTDSG, DDG.</strong></p>
 
   <h3>1. Verantwortlicher (Art. 13 DSGVO)</h3>
-  <p>Stepaniuk Oleksandr, Wohrtstrasse 3, 97082 Würzburg, Deutschland, E-Mail: <a href="mailto:stepanyk2022@icloud.com">stepanyk2022@icloud.com</a>, Telefon: <a href="tel:0677636246">0677636246</a></p>
+  <p>Stepaniuk Oleksandr, Wohrtstrasse 3, 97082 Würzburg, Deutschland, E-Mail: <a href="mailto:stepanyk2022@icloud.com">stepanyk2022@icloud.com</a>, Telefon: <a href="tel:+380677636246">+380 67 763 6246</a></p>
 
   <h3>2. Erhobene Daten und Zwecke</h3>
   <p>Beim Aufruf dieser Website können durch den Hosting-Anbieter technisch erforderliche Verbindungsdaten verarbeitet werden, insbesondere IP-Adresse, Datum und Uhrzeit des Abrufs, aufgerufene Datei, Browsertyp und Betriebssystem. Diese Verarbeitung erfolgt zur Bereitstellung, Stabilität und Sicherheit der Website.</p>
@@ -794,6 +847,7 @@ footer a:hover{color:white}
       <h4>Rechner</h4>
       <a href="#" onclick="switchTabFromFooter('unterhalt')">Kindesunterhalt 2026</a>
       <a href="#" onclick="switchTabFromFooter('ehegatten')">Ehegattenunterhalt</a>
+      <a href="#" onclick="switchTabFromFooter('scheidungskosten')">Scheidungskosten</a>
       <a href="#" onclick="switchTabFromFooter('zugewinn')">Zugewinnausgleich</a>
       <a href="#" onclick="switchTabFromFooter('trennungsjahr')">Trennungsjahr</a>
     </div>
@@ -853,6 +907,14 @@ const VPI_YEAR_AVG = {
   2024: 119.3,
   2025: 121.9
 };
+const FAMGKG_FEE_TABLE = [
+  [500, 39],[1000, 53],[1500, 67],[2000, 81],[3000, 119],[4000, 157],[5000, 195],
+  [6000, 233],[7000, 271],[8000, 309],[9000, 347],[10000, 385],[13000, 443],[16000, 501],
+  [19000, 559],[22000, 617],[25000, 675],[30000, 783],[35000, 891],[40000, 999],[45000, 1107],
+  [50000, 1215],[65000, 1431],[80000, 1647],[95000, 1863],[110000, 2079],[125000, 2295],[140000, 2511],
+  [155000, 2727],[170000, 2943],[185000, 3159],[200000, 3375],[230000, 3807],[260000, 4239],[290000, 4671],
+  [320000, 5103],[350000, 5535],[380000, 5967],[410000, 6399],[440000, 6831],[470000, 7263],[500000, 7695]
+];
 
 // ── RENDER DT TABLE ──
 function renderDT() {
@@ -955,6 +1017,15 @@ function vpiFactor() {
   if(start <= 0 || end <= 0) return null;
   return end / start;
 }
+
+function lookupFamgkgFee(value) {
+  for (const [limit, fee] of FAMGKG_FEE_TABLE) {
+    if(value <= limit) return fee;
+  }
+  const [lastLimit, lastFee] = FAMGKG_FEE_TABLE[FAMGKG_FEE_TABLE.length - 1];
+  const extraBlocks = Math.ceil((value - lastLimit) / 50000);
+  return lastFee + (extraBlocks * 810);
+}
 function getGrp(ek, anzahl) {
   let e = ek;
   if(anzahl===1) e *= 1.15;
@@ -1037,6 +1108,21 @@ function buildReportText(type) {
       `Selbstbehalt: ${lastReport.selbstbehalt}`,
       `Kinderabzug: ${lastReport.kinderAbzug}`,
       `Orientierungswert: ${lastReport.total}`,
+      '',
+      'Hinweis:',
+      lastReport.note
+    );
+  }
+
+  if(type === 'scheidungskosten') {
+    lines.push(
+      'Scheidungskosten',
+      `3-Monats-Nettoeinkommen: ${lastReport.ehesache}`,
+      `Zugewinn-Folgesache: ${lastReport.zugewinn}`,
+      `Versorgungsausgleich: ${lastReport.versorgung}`,
+      `Verfahrenswert gesamt: ${lastReport.total}`,
+      `1,0 Gerichtsgebuehr: ${lastReport.oneFee}`,
+      `Gerichtskosten (2,0): ${lastReport.court}`,
       '',
       'Hinweis:',
       lastReport.note
@@ -1247,7 +1333,47 @@ function calcEhegatt() {
     <div class="cta-box"><p>Sie können den Orientierungswert als PDF speichern und für eine anwaltliche Erstprüfung verwenden.</p>${buildReportActions('ehegatten')}</div>`;
 }
 
-// ── CALC 3: ZUGEWINNAUSGLEICH ──
+// ── CALC 3: SCHEIDUNGSKOSTEN ──
+function calcScheidungskosten() {
+  const a = num('sk-a');
+  const b = num('sk-b');
+  if(a === 0 && b === 0) { setReport(null); emptyResult('result-scheidungskosten', 'Einkommen eingeben'); return; }
+  const ehesache = Math.max(3000, (a + b) * 3);
+  const zugewinn = num('sk-zugewinn');
+  const anrechteRaw = document.getElementById('sk-va-anrechte').value;
+  const anrechte = anrechteRaw === '5' ? 5 : parseInt(anrechteRaw, 10);
+  const versorgungDefault = anrechte > 0 ? Math.max(1000, ehesache * 0.1 * anrechte) : 0;
+  const versorgung = Math.max(versorgungDefault, num('sk-va-custom'));
+  const total = ehesache + zugewinn + versorgung;
+  const oneFee = lookupFamgkgFee(total);
+  const court = oneFee * 2;
+  setReport({
+    type:'scheidungskosten',
+    ehesache: eur(ehesache),
+    zugewinn: eur(zugewinn),
+    versorgung: eur(versorgung),
+    total: eur(total),
+    oneFee: eur(oneFee),
+    court: eur(court),
+    note: 'Vereinfachte Orientierung nach §§ 43, 44, 50 FamGKG. Zugewinn als eingegebener Folgesachenwert, Versorgungsausgleich pauschal mit 10 % des Ehesachenwerts je Anrecht (mindestens 1.000 €), soweit kein höherer manueller Wert eingetragen wurde. Anwaltskosten und Sonderkonstellationen sind nicht enthalten.'
+  });
+  document.getElementById('result-scheidungskosten').innerHTML = `
+    <div class="legal-badge">Kein offizielles Dokument</div>
+    <div class="result-title">Ergebnis Scheidungskosten</div>
+    <div class="result-main"><div class="result-label">Geschätzter Verfahrenswert</div>
+    <div class="result-amount">${eur(total)}</div>
+    <div class="result-sub">FamGKG · vereinfachte Orientierung</div></div>
+    <div>
+    <div class="result-row"><span class="key">3 Monatsnettoeinkommen</span><span class="val">${eur(ehesache)}</span></div>
+    <div class="result-row"><span class="key">Zugewinn-Folgesache</span><span class="val">${eur(zugewinn)}</span></div>
+    <div class="result-row"><span class="key">Versorgungsausgleich</span><span class="val">${eur(versorgung)}</span></div>
+    <div class="result-row"><span class="key">1,0 Gerichtsgebühr</span><span class="val">${eur(oneFee)}</span></div>
+    <div class="result-row"><span class="key">Gerichtskosten (2,0)</span><span class="val val-pos">${eur(court)}</span></div></div>
+    <div class="result-disclaimer"><strong>Hinweis:</strong> Dieser Wert ist nur eine erste Orientierung. Gericht kann Verfahrenswert im Einzelfall anders festsetzen; Anwaltskosten, Einigung, Verfahrenskostenhilfe und weitere Folgesachen sind hier nicht vollständig enthalten.</div>
+    <div class="cta-box"><p>Speichern Sie die Kostenschätzung als PDF und lassen Sie die Einreichung anwaltlich prüfen.</p>${buildReportActions('scheidungskosten')}</div>`;
+}
+
+// ── CALC 4: ZUGEWINNAUSGLEICH ──
 function calcZugewinn() {
   const mE=parseFloat(document.getElementById('z-m-end').value)||0;
   const mS=parseFloat(document.getElementById('z-m-start').value)||0;
@@ -1348,7 +1474,7 @@ document.getElementById('faq-list').innerHTML = faqs.map((f,i)=>`
 function toggleFaq(i){document.getElementById('faq-'+i).classList.toggle('open');}
 
 // ── NAVIGATION ──
-const TABS=['unterhalt','ehegatten','zugewinn','trennungsjahr'];
+const TABS=['unterhalt','ehegatten','scheidungskosten','zugewinn','trennungsjahr'];
 function switchTab(id,btn) {
   TABS.forEach(t=>{
     const p=document.getElementById('tab-'+t);
