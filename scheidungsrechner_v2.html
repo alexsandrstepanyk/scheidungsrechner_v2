@@ -61,7 +61,7 @@
           "name": "Wie viel Kindesunterhalt muss ich 2026 zahlen?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Der Kindesunterhalt richtet sich nach der Düsseldorfer Tabelle 2026 (Stand 01.01.2026). Der Mindestunterhalt beträgt 482 € (0–5 Jahre), 554 € (6–11 Jahre) und 649 € (12–17 Jahre). Davon wird das halbe Kindergeld (129,50 €) abgezogen."
+            "text": "Der Kindesunterhalt richtet sich nach der Düsseldorfer Tabelle 2026 (Stand 01.01.2026). Der Mindestunterhalt beträgt 486 € (0–5 Jahre), 558 € (6–11 Jahre) und 653 € (12–17 Jahre). Davon wird das halbe Kindergeld (129,50 €) abgezogen."
           }
         },
         {
@@ -418,11 +418,32 @@ footer a:hover{color:white}
         <input type="number" class="form-input" id="u-einkommen" placeholder="z.B. 2800" min="0" max="99999" aria-label="Nettoeinkommen in Euro" oninput="calcUnterhalt()">
       </div>
       <div class="form-group">
-        <label class="form-label">Berufsbedingte Aufwendungen abziehen? <span class="hint">(Pauschale 5%, mind. 50 €, max. 150 €)</span></label>
+        <label class="form-label">Bereinigungsmethode <span class="hint">(konkrete Abzüge sind genauer als eine Pauschale)</span></label>
         <div class="radio-group" role="radiogroup" aria-label="Aufwandspauschale">
-          <label class="radio-option"><input type="radio" name="aufwand" value="ja" checked onchange="calcUnterhalt()"> Ja (Standard)</label>
-          <label class="radio-option"><input type="radio" name="aufwand" value="nein" onchange="calcUnterhalt()"> Nein</label>
+          <label class="radio-option"><input type="radio" name="aufwand" value="konkret" checked onchange="calcUnterhalt()"> Konkrete Abzüge (empfohlen)</label>
+          <label class="radio-option"><input type="radio" name="aufwand" value="pauschal" onchange="calcUnterhalt()"> 5%-Pauschale statt Fahrtkosten</label>
         </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="u-beruf">Berufsbedingte Kosten <span class="hint">(tatsächlich monatlich)</span></label>
+          <input type="number" class="form-input" id="u-beruf" placeholder="z.B. 120" min="0" oninput="calcUnterhalt()">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="u-vorsorge">Private Altersvorsorge <span class="hint">(soweit berücksichtigungsfähig)</span></label>
+          <input type="number" class="form-input" id="u-vorsorge" placeholder="z.B. 80" min="0" oninput="calcUnterhalt()">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="u-sonstige">Weitere abzugsfähige Belastungen <span class="hint">(z.B. Wohnkredit, besondere Belastungen)</span></label>
+        <input type="number" class="form-input" id="u-sonstige" placeholder="z.B. 250" min="0" oninput="calcUnterhalt()">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="u-erwerb">Unterhaltspflichtiger erwerbstätig?</label>
+        <select class="form-select" id="u-erwerb" onchange="calcUnterhalt()">
+          <option value="ja" selected>Ja</option>
+          <option value="nein">Nein</option>
+        </select>
       </div>
 
       <div class="form-section">Kinder</div>
@@ -485,6 +506,27 @@ footer a:hover{color:white}
         </select>
       </div>
       <div class="form-group">
+        <label class="form-label">Bereinigungsmethode <span class="hint">(konkrete Abzüge sind genauer als eine Pauschale)</span></label>
+        <div class="radio-group" role="radiogroup" aria-label="Bereinigungsmethode Ehegattenunterhalt">
+          <label class="radio-option"><input type="radio" name="eg-aufwand" value="konkret" checked onchange="calcEhegatt()"> Konkrete Abzüge (empfohlen)</label>
+          <label class="radio-option"><input type="radio" name="eg-aufwand" value="pauschal" onchange="calcEhegatt()"> 5%-Pauschale statt Fahrtkosten</label>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="eg-beruf">Berufsbedingte Kosten Pflichtiger</label>
+          <input type="number" class="form-input" id="eg-beruf" placeholder="z.B. 150" min="0" oninput="calcEhegatt()">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="eg-vorsorge">Private Altersvorsorge Pflichtiger</label>
+          <input type="number" class="form-input" id="eg-vorsorge" placeholder="z.B. 100" min="0" oninput="calcEhegatt()">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="eg-sonstige">Weitere abzugsfähige Belastungen Pflichtiger</label>
+        <input type="number" class="form-input" id="eg-sonstige" placeholder="z.B. 300" min="0" oninput="calcEhegatt()">
+      </div>
+      <div class="form-group">
         <label class="form-label">Gemeinsame unterhaltsberechtigte Kinder</label>
         <select class="form-select" id="eg-kinder" onchange="calcEhegatt()">
           <option value="0">Keine</option>
@@ -515,7 +557,7 @@ footer a:hover{color:white}
           <input type="number" class="form-input" id="z-m-end" placeholder="z.B. 180000" oninput="calcZugewinn()">
         </div>
         <div class="form-group">
-          <label class="form-label">Anfangsvermögen <span class="hint">(bei Eheschließung, indexiert)</span></label>
+          <label class="form-label">Anfangsvermögen <span class="hint">(wird unten indexiert)</span></label>
           <input type="number" class="form-input" id="z-m-start" placeholder="z.B. 40000" oninput="calcZugewinn()">
         </div>
       </div>
@@ -529,6 +571,34 @@ footer a:hover{color:white}
           <label class="form-label">Anfangsvermögen</label>
           <input type="number" class="form-input" id="z-f-start" placeholder="z.B. 10000" oninput="calcZugewinn()">
         </div>
+      </div>
+      <div class="form-section">Indexierung des Anfangsvermögens</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="z-vpi-start-year">VPI-Basisjahr Anfang <span class="hint">(Destatis-Hilfe)</span></label>
+          <select class="form-select" id="z-vpi-start-year" onchange="syncVpiInputs()"></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="z-vpi-end-year">VPI-Stichtag Ende <span class="hint">(Destatis-Hilfe)</span></label>
+          <select class="form-select" id="z-vpi-end-year" onchange="syncVpiInputs()"></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="z-vpi-start">VPI Anfang <span class="hint">(editierbar)</span></label>
+          <input type="number" class="form-input" id="z-vpi-start" placeholder="z.B. 94.1" min="0" step="0.1" oninput="calcZugewinn()">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="z-vpi-end">VPI Ende <span class="hint">(editierbar)</span></label>
+          <input type="number" class="form-input" id="z-vpi-end" placeholder="z.B. 121.9" min="0" step="0.1" oninput="calcZugewinn()">
+        </div>
+      </div>
+      <p class="calc-legal" style="margin-top:0">
+        Automatische Voreinstellung mit Destatis-VPI (Jahresdurchschnitte 2019–2025, Basis 2020=100; 2026 bitte exakten Monatswert manuell eintragen).
+        Für chirurgisch genaue Stichtagsberechnungen sollten die amtlichen Monatswerte des Statistischen Bundesamts geprüft werden.
+      </p>
+      <div class="result-disclaimer" style="margin-top:0">
+        <strong>Nicht enthalten:</strong> Der Versorgungsausgleich wird hier bewusst nicht automatisch berechnet. In Deutschland ist er regelmäßig Teil des Scheidungsverfahrens und muss anhand der tatsächlichen Rentenanwartschaften aller Versorgungsträger gesondert geprüft werden.
       </div>
       <button class="calc-btn" onclick="calcZugewinn()">Zugewinnausgleich berechnen</button>
     </div>
@@ -751,21 +821,21 @@ footer a:hover{color:white}
 // Tabellenbeträge (vor Kindergeldabzug)
 // ══════════════════════════════════════════════
 const DT2026 = [
-  [0, 2100, [482, 554, 649, 693], '1.200 / 1.450'],
-  [2101, 2500, [507, 583, 682, 728], 1750],
-  [2501, 2900, [531, 610, 714, 762], 1850],
-  [2901, 3300, [555, 638, 746, 797], 1950],
-  [3301, 3700, [579, 665, 779, 831], 2050],
-  [3701, 4100, [618, 710, 831, 886], 2150],
-  [4101, 4500, [656, 754, 883, 941], 2250],
-  [4501, 4900, [695, 799, 935, 997], 2350],
-  [4901, 5300, [734, 843, 987, 1052], 2450],
-  [5301, 5700, [772, 887, 1038, 1107], 2550],
-  [5701, 6400, [811, 932, 1090, 1162], 2650],
-  [6401, 7200, [849, 976, 1142, 1217], 2750],
-  [7201, 8200, [888, 1021, 1194, 1272], 2850],
-  [8201, 9700, [926, 1065, 1245, 1328], 3000],
-  [9701, 11200, [965, 1110, 1297, 1383], 3200],
+  [0,    2100,  [486, 558, 653, 698],  960],
+  [2101, 2500,  [511, 587, 686, 734],  1100],
+  [2501, 2900,  [535, 614, 718, 769],  1250],
+  [2901, 3300,  [559, 642, 750, 803],  1400],
+  [3301, 3700,  [583, 670, 782, 837],  1550],
+  [3701, 4100,  [622, 714, 835, 892],  1650],
+  [4101, 4500,  [661, 759, 887, 948],  1750],
+  [4501, 4900,  [700, 803, 939, 1004], 1850],
+  [4901, 5300,  [739, 848, 990, 1059], 1950],
+  [5301, 5700,  [778, 892,1042, 1114], 2050],
+  [5701, 6400,  [817, 937,1094, 1170], 2150],
+  [6401, 7200,  [856, 982,1146, 1225], 2250],
+  [7201, 8200,  [895,1026,1198, 1280], 2350],
+  [8201, 9700,  [934,1071,1250, 1336], 2500],
+  [9701,11200,  [972,1116,1302, 1392], 2700],
 ];
 const KG_HALB = 129.50;
 const KG_VOLL = 259;
@@ -774,6 +844,15 @@ const SELBSTBEHALT_NICHT_ERW = 1200;
 const EHEGATTEN_SB_ERW = 1600;
 const EHEGATTEN_SB_NICHT_ERW = 1475;
 let lastReport = null;
+const VPI_YEAR_AVG = {
+  2019: 99.5,
+  2020: 100.0,
+  2021: 103.1,
+  2022: 110.2,
+  2023: 116.7,
+  2024: 119.3,
+  2025: 121.9
+};
 
 // ── RENDER DT TABLE ──
 function renderDT() {
@@ -818,9 +897,63 @@ function addKind() {
 }
 
 // ── BEREINIGUNG ──
-function bereinigt(netto, abzugJa) {
-  if(!abzugJa) return netto;
-  return netto - Math.min(150, Math.max(50, netto * 0.05));
+function num(id) {
+  const el = document.getElementById(id);
+  return el ? (parseFloat(el.value) || 0) : 0;
+}
+
+function calcBerufsPauschale(netto) {
+  return Math.min(150, Math.max(50, netto * 0.05));
+}
+
+function bereinigt(netto, opts={}) {
+  const mode = opts.mode || 'konkret';
+  const beruf = Math.max(0, Number(opts.beruf || 0));
+  const vorsorge = Math.max(0, Number(opts.vorsorge || 0));
+  const sonstige = Math.max(0, Number(opts.sonstige || 0));
+  const berufsKosten = mode === 'pauschal' ? calcBerufsPauschale(netto) : beruf;
+  const abzuege = berufsKosten + vorsorge + sonstige;
+  return {
+    netto,
+    mode,
+    berufsKosten,
+    vorsorge,
+    sonstige,
+    abzuege,
+    bereinigt: Math.max(0, netto - abzuege)
+  };
+}
+
+function populateVpiYears() {
+  const startSelect = document.getElementById('z-vpi-start-year');
+  const endSelect = document.getElementById('z-vpi-end-year');
+  if(!startSelect || !endSelect || startSelect.options.length) return;
+
+  const years = Object.keys(VPI_YEAR_AVG).map(Number);
+  years.forEach(year => {
+    startSelect.insertAdjacentHTML('beforeend', `<option value="${year}">${year}</option>`);
+    endSelect.insertAdjacentHTML('beforeend', `<option value="${year}">${year}</option>`);
+  });
+  startSelect.insertAdjacentHTML('beforeend', '<option value="custom">Manuell</option>');
+  endSelect.insertAdjacentHTML('beforeend', '<option value="custom">Manuell</option>');
+  startSelect.value = '2020';
+  endSelect.value = '2025';
+}
+
+function syncVpiInputs() {
+  populateVpiYears();
+  const startYear = document.getElementById('z-vpi-start-year').value;
+  const endYear = document.getElementById('z-vpi-end-year').value;
+  if(VPI_YEAR_AVG[startYear]) document.getElementById('z-vpi-start').value = VPI_YEAR_AVG[startYear].toFixed(1);
+  if(VPI_YEAR_AVG[endYear]) document.getElementById('z-vpi-end').value = VPI_YEAR_AVG[endYear].toFixed(1);
+  calcZugewinn();
+}
+
+function vpiFactor() {
+  const start = num('z-vpi-start');
+  const end = num('z-vpi-end');
+  if(start <= 0 || end <= 0) return null;
+  return end / start;
 }
 function getGrp(ek, anzahl) {
   let e = ek;
@@ -867,6 +1000,11 @@ function buildReportText(type) {
     lines.push(
       'Kindesunterhalt',
       `Nettoeinkommen: ${lastReport.raw}`,
+      `Bereinigungsmethode: ${lastReport.deductionMode}`,
+      `Berufsbedingte Kosten: ${lastReport.berufsKosten}`,
+      `Private Altersvorsorge: ${lastReport.vorsorge}`,
+      `Weitere Belastungen: ${lastReport.sonstige}`,
+      `Summe Abzuege: ${lastReport.abzuege}`,
       `Bereinigtes Nettoeinkommen: ${lastReport.ber}`,
       `Einkommensgruppe DT 2026: ${lastReport.group}`,
       `Selbstbehalt: ${lastReport.selbstbehalt}`,
@@ -889,6 +1027,10 @@ function buildReportText(type) {
     lines.push(
       'Ehegattenunterhalt',
       `Art: ${lastReport.kind}`,
+      `Bereinigungsmethode: ${lastReport.deductionMode}`,
+      `Berufsbedingte Kosten Pflichtiger: ${lastReport.berufsKosten}`,
+      `Private Altersvorsorge Pflichtiger: ${lastReport.vorsorge}`,
+      `Weitere Belastungen Pflichtiger: ${lastReport.sonstige}`,
       `Pflichtiger bereinigt: ${lastReport.payer}`,
       `Berechtigter bereinigt: ${lastReport.receiver}`,
       `Erwerbsstatus Pflichtiger: ${lastReport.employment}`,
@@ -904,6 +1046,10 @@ function buildReportText(type) {
   if(type === 'zugewinn') {
     lines.push(
       'Zugewinnausgleich',
+      `VPI Anfang / Ende: ${lastReport.startVpi} / ${lastReport.endVpi}`,
+      `Indexierungsfaktor: ${lastReport.factor}`,
+      `Indexiertes Anfangsvermoegen Ehemann: ${lastReport.mannStart}`,
+      `Indexiertes Anfangsvermoegen Ehefrau: ${lastReport.frauStart}`,
       `Zugewinn Ehemann: ${lastReport.mann}`,
       `Zugewinn Ehefrau: ${lastReport.frau}`,
       `Differenz: ${lastReport.diff}`,
@@ -968,9 +1114,17 @@ function downloadReportPdf(type) {
 function calcUnterhalt() {
   const raw = parseFloat(document.getElementById('u-einkommen').value)||0;
   if(raw<1){setReport(null);emptyResult('result-unterhalt');return;}
-  const abzug = document.querySelector('input[name="aufwand"]:checked').value==='ja';
+  const mode = document.querySelector('input[name="aufwand"]:checked').value;
   const anz = parseInt(document.getElementById('u-anzahl-ges').value);
-  const ber = bereinigt(raw, abzug);
+  const erwerb = document.getElementById('u-erwerb').value;
+  const selbstbehalt = erwerb === 'ja' ? SELBSTBEHALT_ERW : SELBSTBEHALT_NICHT_ERW;
+  const deduction = bereinigt(raw, {
+    mode,
+    beruf: num('u-beruf'),
+    vorsorge: num('u-vorsorge'),
+    sonstige: num('u-sonstige')
+  });
+  const ber = deduction.bereinigt;
   const gi = getGrp(ber, anz);
   const gr = DT2026[gi];
   const zahlkinder = [];
@@ -985,7 +1139,7 @@ function calcUnterhalt() {
   });
   if(zahlkinder.length===0){setReport(null);emptyResult('result-unterhalt','Keine zahlungspflichtigen Kinder (alle wohnen bei Ihnen)');return;}
   const basisGesamt = zahlkinder.reduce((sum, item) => sum + item.basis, 0);
-  const verteilungsmasse = Math.max(0, ber - SELBSTBEHALT_ERW);
+  const verteilungsmasse = Math.max(0, ber - selbstbehalt);
   const mangelfall = verteilungsmasse < basisGesamt;
   let gesamt = 0;
   let rows = '';
@@ -1003,7 +1157,12 @@ function calcUnterhalt() {
     raw: eur(raw),
     ber: eur(ber),
     group: `${gi+1} (bis ${gr[1].toLocaleString('de-DE')} €)`,
-    selbstbehalt: `${SELBSTBEHALT_ERW.toLocaleString('de-DE')} €`,
+    selbstbehalt: `${selbstbehalt.toLocaleString('de-DE')} €`,
+    deductionMode: mode === 'pauschal' ? '5%-Pauschale' : 'konkrete Abzüge',
+    berufsKosten: eur(deduction.berufsKosten),
+    vorsorge: eur(deduction.vorsorge),
+    sonstige: eur(deduction.sonstige),
+    abzuege: eur(deduction.abzuege),
     children: zahlkinder.map(child => ({label:child.label, amount:eur(child.amount)})),
     total: eur(gesamt),
     rest: eur(rest),
@@ -1016,9 +1175,14 @@ function calcUnterhalt() {
     <div class="result-amount">${eur(gesamt)}</div>
     <div class="result-sub">DT 2026 · Gruppe ${gi+1} · Stand 01.01.2026</div></div>
     <div>${rows}
+    <div class="result-row"><span class="key">Bereinigungsmethode</span><span class="val">${mode === 'pauschal' ? '5%-Pauschale' : 'konkrete Abzüge'}</span></div>
+    <div class="result-row"><span class="key">Berufsbedingte Kosten</span><span class="val">${eur(deduction.berufsKosten)}</span></div>
+    <div class="result-row"><span class="key">Private Altersvorsorge</span><span class="val">${eur(deduction.vorsorge)}</span></div>
+    <div class="result-row"><span class="key">Weitere Belastungen</span><span class="val">${eur(deduction.sonstige)}</span></div>
+    <div class="result-row"><span class="key">Summe Abzüge</span><span class="val">${eur(deduction.abzuege)}</span></div>
     <div class="result-row"><span class="key">Bereinigtes Netto</span><span class="val">${eur(ber)}</span></div>
     <div class="result-row"><span class="key">Einkommensgruppe</span><span class="val">${gi+1} (bis ${gr[1].toLocaleString('de-DE')} €)</span></div>
-    <div class="result-row"><span class="key">Selbstbehalt (erwerbstätig)</span><span class="val">1.450 €</span></div>
+    <div class="result-row"><span class="key">Selbstbehalt</span><span class="val">${selbstbehalt.toLocaleString('de-DE')} €</span></div>
     <div class="result-row"><span class="key">Verbleibt nach Unterhalt</span><span class="val ${mangelfall?'val-neg':'val-pos'}">${eur(rest)}</span></div></div>
     ${warn}
     <div class="result-disclaimer"><strong>Hinweis:</strong> Dieser Rechner erzeugt nur einen unverbindlichen Orientierungswert nach DT 2026. Er ersetzt weder Jugendamt, Gericht noch Rechtsberatung (§ 2 RDG).</div>
@@ -1030,7 +1194,15 @@ function calcEhegatt() {
   const p=parseFloat(document.getElementById('eg-p').value)||0;
   const b=parseFloat(document.getElementById('eg-b').value)||0;
   if(p<1){setReport(null);emptyResult('result-ehegatten');return;}
-  const pb=bereinigt(p,true), bb=bereinigt(b,true);
+  const mode = document.querySelector('input[name="eg-aufwand"]:checked').value;
+  const payerDeduction = bereinigt(p, {
+    mode,
+    beruf: num('eg-beruf'),
+    vorsorge: num('eg-vorsorge'),
+    sonstige: num('eg-sonstige')
+  });
+  const receiverDeduction = bereinigt(b, {mode:'konkret'});
+  const pb=payerDeduction.bereinigt, bb=receiverDeduction.bereinigt;
   const erwerb=document.getElementById('eg-erwerb').value;
   const quote=erwerb==='ja' ? 0.45 : 0.5;
   const sbst=erwerb==='ja' ? EHEGATTEN_SB_ERW : EHEGATTEN_SB_NICHT_ERW;
@@ -1048,6 +1220,11 @@ function calcEhegatt() {
     employment: erwerb==='ja' ? 'erwerbstaetig' : 'nicht erwerbstaetig',
     selbstbehalt: `${sbst.toLocaleString('de-DE')} €`,
     kinderAbzug: `${kinder_abzug.toLocaleString('de-DE')} €`,
+    deductionMode: mode === 'pauschal' ? '5%-Pauschale' : 'konkrete Abzüge',
+    berufsKosten: eur(payerDeduction.berufsKosten),
+    vorsorge: eur(payerDeduction.vorsorge),
+    sonstige: eur(payerDeduction.sonstige),
+    abzuege: eur(payerDeduction.abzuege),
     total: `${u.toLocaleString('de-DE')} €`,
     note: 'Nur stark vereinfachter Orientierungswert. Erwerbsobliegenheit, ehepraegende Einkuenfte, Wohnvorteil, Rangfolge, Bedarf nach den ehelichen Lebensverhaeltnissen und Rechtsprechung im Einzelfall sind nicht vollstaendig abgebildet.'
   });
@@ -1058,6 +1235,10 @@ function calcEhegatt() {
     <div class="result-amount">${u.toLocaleString('de-DE')} €</div>
     <div class="result-sub">Monatlich · Orientierungswert</div></div>
     <div>
+    <div class="result-row"><span class="key">Bereinigungsmethode</span><span class="val">${mode === 'pauschal' ? '5%-Pauschale' : 'konkrete Abzüge'}</span></div>
+    <div class="result-row"><span class="key">Berufsbedingte Kosten Pflichtiger</span><span class="val">${eur(payerDeduction.berufsKosten)}</span></div>
+    <div class="result-row"><span class="key">Private Altersvorsorge Pflichtiger</span><span class="val">${eur(payerDeduction.vorsorge)}</span></div>
+    <div class="result-row"><span class="key">Weitere Belastungen Pflichtiger</span><span class="val">${eur(payerDeduction.sonstige)}</span></div>
     <div class="result-row"><span class="key">Einkommen Pflichtiger (bereinigt)</span><span class="val">${eur(pb)}</span></div>
     <div class="result-row"><span class="key">Einkommen Berechtigter (bereinigt)</span><span class="val">${eur(bb)}</span></div>
     <div class="result-row"><span class="key">Quote (vereinfacht)</span><span class="val">${Math.round(quote*100)} %</span></div>
@@ -1073,18 +1254,28 @@ function calcZugewinn() {
   const fE=parseFloat(document.getElementById('z-f-end').value)||0;
   const fS=parseFloat(document.getElementById('z-f-start').value)||0;
   if(mE===0&&fE===0){setReport(null);emptyResult('result-zugewinn');return;}
-  const mZ=Math.max(0,mE-mS), fZ=Math.max(0,fE-fS);
+  const factor = vpiFactor();
+  const mSIdx = factor ? mS * factor : mS;
+  const fSIdx = factor ? fS * factor : fS;
+  const mZ=Math.max(0,mE-mSIdx), fZ=Math.max(0,fE-fSIdx);
   const diff=mZ-fZ;
   const ausgleich=Math.round(Math.abs(diff)/2);
   const richtung=diff>0?'Ehefrau erhält von Ehemann':diff<0?'Ehemann erhält von Ehefrau':'Kein Ausgleich erforderlich';
+  const startVpi = num('z-vpi-start');
+  const endVpi = num('z-vpi-end');
   setReport({
     type:'zugewinn',
+    startVpi: startVpi ? startVpi.toFixed(1) : '—',
+    endVpi: endVpi ? endVpi.toFixed(1) : '—',
+    factor: factor ? factor.toFixed(4) : '—',
+    mannStart: eur(mSIdx),
+    frauStart: eur(fSIdx),
     mann: eur(mZ),
     frau: eur(fZ),
     diff: eur(Math.abs(diff)),
     total: `${ausgleich.toLocaleString('de-DE')} €`,
     direction: richtung,
-    note: 'Nur vereinfacht auf Basis Endvermoegen minus Anfangsvermoegen. Indexierung, privilegierter Erwerb, Schenkungen, Erbschaften, Schulden und Bewertung von Immobilien/Beteiligungen muessen individuell geprueft werden.'
+    note: factor ? 'Indexierung auf Basis der eingetragenen VPI-Werte vorgenommen. Fuer exakte familiengerichtliche Berechnungen sollten die amtlichen Monatswerte und alle privilegierten Erwerbe gesondert geprueft werden.' : 'Ohne gueltige VPI-Werte konnte keine Indexierung vorgenommen werden. Bitte VPI-Werte oder Jahresvorgaben pruefen.'
   });
   document.getElementById('result-zugewinn').innerHTML=`
     <div class="legal-badge">Kein offizielles Dokument</div>
@@ -1093,13 +1284,20 @@ function calcZugewinn() {
     <div class="result-amount">${ausgleich.toLocaleString('de-DE')} €</div>
     <div class="result-sub">${richtung}</div></div>
     <div>
+    <div class="result-row"><span class="key">VPI Anfang / Ende</span><span class="val">${startVpi ? startVpi.toFixed(1).replace('.',',') : '—'} / ${endVpi ? endVpi.toFixed(1).replace('.',',') : '—'}</span></div>
+    <div class="result-row"><span class="key">Indexierungsfaktor</span><span class="val">${factor ? factor.toFixed(4).replace('.',',') : '—'}</span></div>
+    <div class="result-row"><span class="key">Indexiertes Anfangsvermögen Ehemann</span><span class="val">${eur(mSIdx)}</span></div>
+    <div class="result-row"><span class="key">Indexiertes Anfangsvermögen Ehefrau</span><span class="val">${eur(fSIdx)}</span></div>
     <div class="result-row"><span class="key">Zugewinn Ehemann</span><span class="val">${eur(mZ)}</span></div>
     <div class="result-row"><span class="key">Zugewinn Ehefrau</span><span class="val">${eur(fZ)}</span></div>
     <div class="result-row"><span class="key">Differenz</span><span class="val">${eur(Math.abs(diff))}</span></div>
     <div class="result-row"><span class="key">Ausgleich (½ Differenz)</span><span class="val val-pos">${ausgleich.toLocaleString('de-DE')} €</span></div></div>
-    <div class="result-disclaimer"><strong>Hinweis:</strong> Nur unverbindlicher Rechenwert. Für ein verwertbares Ergebnis müssen Vermögenswerte, Schulden, privilegierter Erwerb und Stichtage belastbar dokumentiert werden.</div>
+    <div class="result-disclaimer"><strong>Hinweis:</strong> Nur unverbindlicher Rechenwert. Für ein verwertbares Ergebnis müssen Vermögenswerte, Schulden, privilegierter Erwerb, VPI-Stichtage und Zustellungszeitpunkt belastbar dokumentiert werden. Versorgungsausgleich ist hier nicht enthalten.</div>
     <div class="cta-box"><p>Sie können den Rechenstand als PDF sichern und mit einem Fachanwalt besprechen.</p>${buildReportActions('zugewinn')}</div>`;
 }
+
+populateVpiYears();
+syncVpiInputs();
 
 // ── CALC 4: TRENNUNGSJAHR ──
 function calcTrennung() {
@@ -1135,7 +1333,7 @@ function calcTrennung() {
 
 // ── FAQ DATA ──
 const faqs = [
-  ["Wie viel Kindesunterhalt zahlt man 2026?","Der Kindesunterhalt richtet sich nach der Düsseldorfer Tabelle 2026 (DT 2026, Stand 01.01.2026). Der Mindestunterhalt beträgt 482 € (0–5 Jahre), 554 € (6–11 Jahre) und 649 € (12–17 Jahre). Davon wird das halbe Kindergeld (129,50 €) abgezogen. Der tatsächliche Betrag hängt vom bereinigten Nettoeinkommen des Unterhaltspflichtigen ab."],
+  ["Wie viel Kindesunterhalt zahlt man 2026?","Der Kindesunterhalt richtet sich nach der Düsseldorfer Tabelle 2026 (DT 2026, Stand 01.01.2026). Der Mindestunterhalt beträgt 486 € (0–5 Jahre), 558 € (6–11 Jahre) und 653 € (12–17 Jahre). Davon wird das halbe Kindergeld (129,50 €) abgezogen. Der tatsächliche Betrag hängt vom bereinigten Nettoeinkommen des Unterhaltspflichtigen ab."],
   ["Was ist der Selbstbehalt beim Kindesunterhalt?","Der notwendige Selbstbehalt beträgt 2026 für Erwerbstätige 1.450 € und für Nicht-Erwerbstätige 1.200 € monatlich (§ 1603 Abs. 2 BGB). Dieser Betrag muss dem Unterhaltspflichtigen nach Zahlung des Unterhalts verbleiben."],
   ["Was ist der Zugewinnausgleich bei Scheidung?","Beim Zugewinnausgleich (§ 1378 BGB) erhält der Ehegatte mit dem geringeren Zugewinn eine Ausgleichsforderung in Höhe der Hälfte des Unterschieds. Zugewinn = Endvermögen − Anfangsvermögen (§ 1373 BGB). Negative Zugewinne werden mit 0 angesetzt (§ 1374 Abs. 3 BGB)."],
   ["Wann kann ich die Scheidung einreichen?","Erst nach Ablauf des Trennungsjahres (12 Monate getrennt leben) kann der Scheidungsantrag beim Familiengericht eingereicht werden (§ 1566 Abs. 1 BGB). In Härtefällen ist eine Ausnahme möglich (§ 1565 Abs. 2 BGB)."],
