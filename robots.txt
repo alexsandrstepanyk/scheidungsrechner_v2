@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.scheidungsrechner.de/sitemap.xml
+Sitemap: https://alexsandrstepanyk.github.io/scheidungsrechner_v2/sitemap.xml
